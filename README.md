@@ -56,10 +56,37 @@ Note : File name should be with HDL Extension
 •	fa_4bit.v → Top Module for Adding 4-bit Inputs. 
 
 •	fa_4bit_test.v → Test bench 
+```
+module full_adder(A,B,CIN,S,COUT);
+input A,B,CIN;
+output S,COUT;
+assign S=A^B^CIN;
+assign COUT=(A&B) | (CIN&(A^B));
+ endmodule
 
-*/Program to design 4 bit adder by instantiating 1 bit Full adder.also add test bench program */
-Developed by: Register Number*/
-
+module fulladd_4bit(A,B,C0,S,C4); input [3:0] A,B;
+input C0; output [3:0] S; output C4;
+wire C1,C2,C3;
+full_adder fa0 (A[0],B[0],C0,S[0],C1);
+full_adder fa1 (A[1],B[1],C1,S[1],C2);
+full_adder fa2 (A[2],B[2],C2,S[2],C3);
+full_adder fa3 (A[3],B[3],C3,S[3],C4);
+endmodule
+```
+#Testbench
+```
+module test_4bit;
+reg [3:0] A;
+reg [3:0] B; reg C0; wire [3:0] S; wire C4;
+fulladd_4bit dut (A,B,C0,S,C4);
+initial
+begin A=4'b0011;B=4'b0011;C0=1'b0;
+#10; A=4'b1011;B=4'b0111;C0=1'b1;
+#10; A=4'b1111;B=4'b1111;C0=1'b1;
+#10;
+end initial #50 $finish;
+endmodule
+```
 ## Functional Simulation: 
 
 	Invoke the cadence environment by type the below commands 
@@ -83,12 +110,14 @@ or
 •	linux:/> nclaunch& // On subsequent calls to NCVERILOG 
 
 	It will invoke the nclaunch window for functional simulation we can compile,elaborate and simulate it using Multiple Step .
+![Screenshot 2025-04-29 110209](https://github.com/user-attachments/assets/28387935-5b0b-4cde-afa1-87b94c6bbab1)
 
 ### Fig 4:Setting Multi-step simulation
 
 	Select Multiple Step and then select “Create cds.lib File” .
 
 	Click the cds.lib file and save the file by clicking on Save option 
+![Screenshot 2025-04-29 105647](https://github.com/user-attachments/assets/8d77504c-a58a-470f-816d-1844781bedc7)
 
 ### Fig 5:cds.lib file Creation
 
@@ -101,6 +130,7 @@ or
 •	A Click “OK” in the “nclaunch: Open Design Directory” window as shown in below figure 
 
 ![image](https://github.com/user-attachments/assets/781b297a-11e9-4140-89c5-ee3b0d15bbd4)
+![Screenshot 2025-04-29 105700](https://github.com/user-attachments/assets/1a97d981-41e8-4c15-8164-7631cebd1d6c)
 
 ### Fig 6: Selection of Don’t include any libraries
 
@@ -111,6 +141,7 @@ or
 	Worklib is the directory where all the compiled codes are stored while Snapshot will have output of elaboration which in turn goes for simulation .
 
 	To perform the function simulation, the following three steps are involved Compilation, Elaboration and Simulation. 
+![Screenshot 2025-04-29 105744](https://github.com/user-attachments/assets/60366a2c-103c-40c4-91ee-2e21ade20348)
 
 ### Fig 7: Nclaunch Window
 
@@ -130,6 +161,7 @@ i.e Cadence IES command for compile: ncverilog +access+rwc -compile fa.v
 Left side select the file and in Tools : launch verilog compiler with current selection will get enable. Click it to compile the code 
 
 Worklib is the directory where all the compiled codes are stored while Snapshot will have output of elaboration which in turn goes for simulation
+![Screenshot 2025-04-29 105830](https://github.com/user-attachments/assets/a65581d3-433c-4c0f-a08c-84ecac0d2b61)
 
 ### Fig 8: Compiled database in worklib
 
@@ -153,6 +185,7 @@ i.e Cadence IES command for compile: ncverilog +access+rwc -compile fa.v
 5.	It also establishes net connectivity and prepares all of this for simulation
    
 	After elaboration the file will come under snapshot. Select the test bench and elaborate it.
+![Screenshot 2025-04-29 105830](https://github.com/user-attachments/assets/ec9cb980-88e4-4b87-8ac4-9a5c573a5b36)
 
 ### Fig 9: Elaboration Launch Option
 
@@ -167,8 +200,10 @@ i.e Cadence IES command for compile: ncverilog +access+rwc -compile fa.v
 	Steps for simulation – Run the simulation command with simulator options
 
 ### Fig 10: Design Browser window for simulation
+![Screenshot 2025-04-29 105900](https://github.com/user-attachments/assets/cfccef86-a1e0-4d30-8105-33d9e50ec6ac)
 
 ### Fig 11: Launching Simulation Waveform WindowSimulation Waveform Window
+![Screenshot 2025-04-29 105909](https://github.com/user-attachments/assets/7248a6a9-59d3-4ca6-b52d-c88b480062be)
 
 ### Fig 12: Simulation Waveform Window
 
